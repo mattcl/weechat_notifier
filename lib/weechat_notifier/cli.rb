@@ -21,8 +21,13 @@ module WeechatNotifier
       type: :string,
       default: File.join(ENV['HOME'], '.weechat_notifier.yml'),
       desc: 'path to the config file'
+    option :log_level,
+      aliases: '-l',
+      type: :string,
+      defaut: 'info',
+      desc: 'the log level'
     def start
-      logger.level = Logger::DEBUG
+      set_log_level(options[:log_level])
 
       unless File.exists?(options[:config])
         logger.error 'config file does not exist'
@@ -39,6 +44,21 @@ module WeechatNotifier
     desc 'init', 'generate a config file'
     def init
       template('templates/weechat_notifier.yml.erb', File.join(ENV['HOME'], '.weechat_notifier.yml'))
+    end
+
+    protected
+
+    def set_log_level(level)
+      case level.to_s.downcase
+      when 'error'
+        logger.level = Logger::ERROR
+      when 'warn'
+        logger.level = Logger::WARN
+      when 'debug'
+        logger.level = Logger::DEBUG
+      else
+        logger.level = Logger::INFO
+      end
     end
   end
 end
