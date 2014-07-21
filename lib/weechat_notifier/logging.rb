@@ -1,7 +1,9 @@
+require 'logger'
+
 module WeechatNotifier
   module Logging
     def self.logger
-      @logger ||= nil #TODO
+      @logger ||= Logger.new(STDOUT)
     end
 
     def logger

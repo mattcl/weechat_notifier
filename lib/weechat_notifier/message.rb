@@ -8,6 +8,7 @@ module WeechatNotifier
     attr_reader :server
     attr_reader :body
     attr_reader :from
+    attr_reader :raw
 
     def initialize(raw_body)
       parsed_body = YAML.load(raw_body)
@@ -18,6 +19,7 @@ module WeechatNotifier
       @server    = parsed_body[:server]
       @body      = parsed_body[:message]
       @from      = extract_sender(parsed_body)
+      @raw       = parsed_body
     end
 
     def extract_sender(parsed_body)

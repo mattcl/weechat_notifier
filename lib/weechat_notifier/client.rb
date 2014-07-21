@@ -3,11 +3,14 @@ require 'libnotify'
 require 'yaml'
 
 require 'weechat_notifier/config'
+require 'weechat_notifier/logging'
 require 'weechat_notifier/message'
 require 'weechat_notifier/notifier'
 
 module WeechatNotifier
   class Client
+    include Logging
+
     attr_reader :exchange
     attr_reader :connection
     attr_reader :channel
@@ -31,6 +34,7 @@ module WeechatNotifier
       begin
         queue.subscribe(block: true) do |info, prop, raw_body|
           msg = Message.new(raw_body)
+          logger.debug "received: #{msg.raw.inspect}"
           Notifier.display(msg)
         end
       rescue Interrupt => _
@@ -39,6 +43,7 @@ module WeechatNotifier
     end
 
     def disconnect
+      logger.info 'closing connection'
       channel.close
       connection.close
     end

@@ -1,12 +1,15 @@
 require 'thor'
 require 'yaml'
+require 'logger'
 
 require 'weechat_notifier/client'
 require 'weechat_notifier/config'
+require 'weechat_notifier/logging'
 
 module WeechatNotifier
   class CLI < Thor
     include Thor::Actions
+    include Logging
 
     def self.source_root
       File.dirname(__FILE__)
@@ -19,15 +22,17 @@ module WeechatNotifier
       default: File.join(ENV['HOME'], '.weechat_notifier.yml'),
       desc: 'path to the config file'
     def start
+      logger.level = Logger::DEBUG
+
       unless File.exists?(options[:config])
-        error 'config file does not exist'
+        logger.error 'config file does not exist'
         exit 1
       end
 
       Config.set(YAML.load_file(options[:config]))
       client = Client.new
 
-      say 'connection established'
+      logger.info 'connection established'
       client.start
     end
 
