@@ -25,7 +25,7 @@ module WeechatNotifier
       end
 
       Config.set(YAML.load_file(options[:config]))
-      client = Client.new(conf)
+      client = Client.new
 
       say 'connection established'
       client.start

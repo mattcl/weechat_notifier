@@ -13,7 +13,7 @@ module WeechatNotifier
     attr_reader :channel
     attr_reader :queue
 
-    def initialize(config)
+    def initialize
       @connection = Bunny.new(
         host: Config.data['host'],
         user: Config.data['user'],

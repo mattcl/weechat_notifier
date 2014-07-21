@@ -2,6 +2,8 @@ require 'libnotify'
 
 module WeechatNotifier
   class Notifier
+    DEFAULT_DURATION = 2.5
+
     def self.display(msg)
       if msg.type == 'private'
         summary = "pm: #{msg.from}"
@@ -9,10 +11,12 @@ module WeechatNotifier
         summary = "#{msg.from}:#{msg.channel}"
       end
 
+      duration = Config.data['notice_duration'] || DEFAULT_DURATION
+
       Libnotify.show(
         summary: summary,
         body: msg.body,
-        timeout: 3
+        timeout: duration
       )
     end
   end
