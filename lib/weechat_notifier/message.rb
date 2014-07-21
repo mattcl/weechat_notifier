@@ -19,12 +19,12 @@ module WeechatNotifier
       @body      = parsed_body[:message]
       @from      = extract_sender(parsed_body)
     end
-  end
 
-  def extract_sender(parsed_body)
-    match = parsed_body[:tags].map { |t| t.match(/^nick_(.*)$/) }.compact.first
-    if match
-      return match[1]
+    def extract_sender(parsed_body)
+      match = parsed_body[:tags].map { |t| t.match(/^nick_(.*)$/) }.compact.first
+      if match
+        return match[1]
+      end
     end
   end
 end
