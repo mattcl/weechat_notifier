@@ -12,7 +12,7 @@ module WeechatNotifier
       Libnotify.show(
         summary: summary,
         body: msg.body,
-        timeout: 1.5
+        timeout: 3
       )
     end
   end

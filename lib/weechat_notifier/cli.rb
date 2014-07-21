@@ -2,6 +2,7 @@ require 'thor'
 require 'yaml'
 
 require 'weechat_notifier/client'
+require 'weechat_notifier/config'
 
 module WeechatNotifier
   class CLI < Thor
@@ -23,7 +24,7 @@ module WeechatNotifier
         exit 1
       end
 
-      conf = YAML.load_file(options[:config])
+      Config.set(YAML.load_file(options[:config]))
       client = Client.new(conf)
 
       say 'connection established'

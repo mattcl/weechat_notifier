@@ -2,6 +2,7 @@ require 'bunny'
 require 'libnotify'
 require 'yaml'
 
+require 'weechat_notifier/config'
 require 'weechat_notifier/message'
 require 'weechat_notifier/notifier'
 
@@ -14,14 +15,14 @@ module WeechatNotifier
 
     def initialize(config)
       @connection = Bunny.new(
-        host: config['host'],
-        user: config['user'],
-        pass: config['pass'],
-        vhost: config['vhost']
+        host: Config.data['host'],
+        user: Config.data['user'],
+        pass: Config.data['pass'],
+        vhost: Config.data['vhost']
       )
       connection.start
       @channel = connection.create_channel
-      @exchange = channel.fanout(config['exchange'])
+      @exchange = channel.fanout(Config.data['exchange'])
       @queue = connection.queue('', exclusive: true)
       queue.bind(exchange)
     end
