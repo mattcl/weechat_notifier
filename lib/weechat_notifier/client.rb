@@ -11,6 +11,8 @@ module WeechatNotifier
   class Client
     include Logging
 
+    DISCARD_TAGS = ['irc_nick_back', 'notify_none']
+
     attr_reader :exchange
     attr_reader :connection
     attr_reader :channel
@@ -35,7 +37,11 @@ module WeechatNotifier
         queue.subscribe(block: true) do |info, prop, raw_body|
           msg = Message.new(raw_body)
           logger.debug "received: #{msg.raw.inspect}"
-          Notifier.display(msg)
+          if (message.tags & DISCARD_TAGS).any?
+            logger.debug 'discarding'
+          else
+            Notifier.display(msg)
+          end
         end
       rescue Interrupt => _
         disconnect

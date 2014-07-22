@@ -8,6 +8,7 @@ module WeechatNotifier
     attr_reader :server
     attr_reader :body
     attr_reader :from
+    attr_reader :tags
     attr_reader :raw
 
     def initialize(raw_body)
@@ -18,15 +19,20 @@ module WeechatNotifier
       @channel   = parsed_body[:channel]
       @server    = parsed_body[:server]
       @body      = parsed_body[:message]
-      @from      = extract_sender(parsed_body)
+      @tags      = parsed_body[:tags]
+      @from      = extract_sender
       @raw       = parsed_body
     end
 
-    def extract_sender(parsed_body)
-      match = parsed_body[:tags].map { |t| t.match(/^nick_(.*)$/) }.compact.first
+    def extract_sender
+      match = tags.map { |t| t.match(/^nick_(.*)$/) }.compact.first
       if match
         return match[1]
       end
+    end
+
+    def tag?(val)
+      tags.include?(val)
     end
   end
 end
