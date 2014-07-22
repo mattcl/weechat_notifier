@@ -37,7 +37,7 @@ module WeechatNotifier
         queue.subscribe(block: true) do |info, prop, raw_body|
           msg = Message.new(raw_body)
           logger.debug "received: #{msg.raw.inspect}"
-          if (message.tags & DISCARD_TAGS).any?
+          if (msg.tags & DISCARD_TAGS).any?
             logger.debug 'discarding'
           else
             Notifier.display(msg)
