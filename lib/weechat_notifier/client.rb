@@ -11,7 +11,7 @@ module WeechatNotifier
   class Client
     include Logging
 
-    DISCARD_TAGS = ['irc_nick_back', 'notify_none']
+    DISCARD_TAGS = ['irc_nick_back', 'notify_none', 'irc_301']
 
     attr_reader :exchange
     attr_reader :connection
