@@ -26,6 +26,11 @@ module WeechatNotifier
       type: :string,
       defaut: 'info',
       desc: 'the log level'
+    option :xmobar,
+      aliases: '-x',
+      type: :boolean,
+      desc: 'output to an xmobar-readable file'
+
     def start
       set_log_level(options[:log_level])
 
@@ -35,6 +40,8 @@ module WeechatNotifier
       end
 
       Config.set(YAML.load_file(options[:config]))
+      Config.data['xmobar']['enabled'] = options[:xmobar]
+
       client = Client.new
 
       logger.info 'connection established'

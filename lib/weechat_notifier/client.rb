@@ -6,6 +6,7 @@ require 'weechat_notifier/config'
 require 'weechat_notifier/logging'
 require 'weechat_notifier/message'
 require 'weechat_notifier/notifier'
+require 'weechat_notifier/xmobar'
 
 module WeechatNotifier
   class Client
@@ -41,6 +42,10 @@ module WeechatNotifier
             logger.debug 'discarding'
           else
             Notifier.display(msg)
+
+            if Config.data['xmobar']['enabled'] && !Xmobar.ignored_sender?(msg.from)
+              Xmobar.write(msg)
+            end
           end
         end
       rescue Interrupt => _
