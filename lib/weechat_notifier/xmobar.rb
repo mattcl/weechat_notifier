@@ -23,9 +23,16 @@ module WeechatNotifier
       @file ||= File.open(path, 'w+')
     end
 
+    def self.color(msg)
+      senders = Config.data['xmobar']['colored_senders'] || {}
+      color = senders[msg.from]
+      color = Config.data['xmobar']['default_color'] unless color
+      color
+    end
+
     def self.write(msg)
       logger.debug "xmobar writing: #{msg.inspect}"
-      message = "<#{msg.from}> #{msg.body}"
+      message = "<fc=#{self.color(msg)}><#{msg.from}> #{msg.body}</fc>"
       if message.length > self.max_len
         message = message[0..(self.max_len - 1)] + '...'
       end
