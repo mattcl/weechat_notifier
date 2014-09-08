@@ -30,6 +30,7 @@ module WeechatNotifier
         message = message[0..(self.max_len - 1)] + '...'
       end
       self.file_handle.puts message
+      self.file_handle.flush
     end
 
     def self.close
