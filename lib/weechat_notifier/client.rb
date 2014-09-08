@@ -57,6 +57,10 @@ module WeechatNotifier
       logger.info 'closing connection'
       channel.close
       connection.close
+      if Config.data['xmobar']['enabled']
+        logger.info 'closing file handle'
+        Xmobar.close
+      end
     end
   end
 end

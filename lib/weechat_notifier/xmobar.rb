@@ -1,9 +1,16 @@
 require 'securerandom'
 
 require 'weechat_notifier/config'
+require 'weechat_notifier/logging'
 
 module WeechatNotifier
   class Xmobar
+    include Logging
+
+    def self.max_len
+      @max_len ||= Config.data['xmobar']['max_len'].to_i
+    end
+
     def self.filename
       'xmobar-chats'
     end
@@ -17,9 +24,10 @@ module WeechatNotifier
     end
 
     def self.write(msg)
+      logger.debug "xmobar writing: #{msg.inspect}"
       message = "<#{msg.from}> #{msg.body}"
-      if message.length > 80
-        message = message[0..79] + '...'
+      if message.length > self.max_len
+        message = message[0..(self.max_len - 1)] + '...'
       end
       self.file_handle.puts message
     end
