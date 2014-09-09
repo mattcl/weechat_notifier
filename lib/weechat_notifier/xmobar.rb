@@ -46,7 +46,7 @@ module WeechatNotifier
     end
 
     def self.ignored_sender?(sender)
-      Config.data['xmobar']['ignored_senders'].include?(sender.downcase)
+      Config.data['xmobar']['ignored_senders'].include?(sender)
     end
   end
 end
