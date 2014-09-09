@@ -32,10 +32,11 @@ module WeechatNotifier
 
     def self.write(msg)
       logger.debug "xmobar writing: #{msg.inspect}"
-      message = "<fc=#{self.color(msg)}><#{msg.from}> #{msg.body}</fc>"
+      message = "<fc=#{self.color(msg)}><#{msg.from}> #{msg.body}"
       if message.length > self.max_len
         message = message[0..(self.max_len - 1)] + '...'
       end
+      message += '</fc>'
       self.file_handle.puts message
       self.file_handle.flush
     end
