@@ -48,7 +48,6 @@ module WeechatNotifier
       logger.info 'connection established'
       if Config.data['xmobar']['enabled']
         logger.info 'will write to xmobar tmp file'
-        client.start
       end
       Notifier.show(body: 'setup complete')
       client.start

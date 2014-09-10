@@ -34,11 +34,12 @@ module WeechatNotifier
     end
 
     def start
+      ignored_senders = Config.data['ignored_senders'] || []
       begin
         queue.subscribe(block: true) do |info, prop, raw_body|
           msg = Message.new(raw_body)
           logger.debug "received: #{msg.raw.inspect}"
-          if (msg.tags & DISCARD_TAGS).any?
+          if (msg.tags & DISCARD_TAGS).any? or ignored_senders.include?(msg.from)
             logger.debug 'discarding'
           else
             Notifier.display(msg)
