@@ -5,6 +5,7 @@ require 'logger'
 require 'weechat_notifier/client'
 require 'weechat_notifier/config'
 require 'weechat_notifier/logging'
+require 'weechat_notifier/notifier'
 
 module WeechatNotifier
   class CLI < Thor
@@ -49,6 +50,8 @@ module WeechatNotifier
         logger.info 'will write to xmobar tmp file'
         client.start
       end
+      Notifier.show(body: 'setup complete')
+      client.start
     end
 
     desc 'init', 'generate a config file'
