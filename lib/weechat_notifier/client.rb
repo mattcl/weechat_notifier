@@ -41,6 +41,9 @@ module WeechatNotifier
           logger.debug "received: #{msg.raw.inspect}"
           if (msg.tags & DISCARD_TAGS).any? or ignored_senders.include?(msg.from)
             logger.debug 'discarding'
+          elsif msg.disconnect?
+            logger.debug "received disconnect"
+            raise Interrupt
           else
             Notifier.display(msg)
 

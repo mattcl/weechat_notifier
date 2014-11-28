@@ -34,5 +34,9 @@ module WeechatNotifier
     def tag?(val)
       tags.include?(val)
     end
+
+    def disconnect?
+      body.match(/^weechat_notifier disconnect/)
+    end
   end
 end
