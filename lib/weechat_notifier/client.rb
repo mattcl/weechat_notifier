@@ -45,7 +45,7 @@ module WeechatNotifier
             logger.debug "received disconnect"
             raise Interrupt
           else
-            Notifier.display(msg)
+            Notifier.display(msg) if show?
 
             if Config.data['xmobar']['enabled'] && !Xmobar.ignored_sender?(msg.from)
               Xmobar.write(msg)
@@ -65,6 +65,14 @@ module WeechatNotifier
         logger.info 'closing file handle'
         Xmobar.close
       end
+    end
+
+    def show?
+      check_command = Config.data['check_command']
+      return true unless check_command
+
+      res = IO.popen(Config.data['check_command']).readlines.first
+      res.match(/show/i)
     end
   end
 end
