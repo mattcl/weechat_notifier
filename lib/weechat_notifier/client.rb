@@ -68,10 +68,10 @@ module WeechatNotifier
     end
 
     def show?
-      check_command = Config.data['check_command']
+      check_command = Config.data['privacy_command']
       return true unless check_command
 
-      res = IO.popen(Config.data['check_command']).readlines.first
+      res = IO.popen(check_command).readlines.last
       res.match(/show/i)
     end
   end
